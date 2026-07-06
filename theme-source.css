@@ -1,0 +1,599 @@
+/* ============================================================================
+   FT Reading — an editorial theme for Obsidian
+   Inspired by the Financial Times. Warm, print-like, calm. Built for
+   long-form reading and writing.
+
+   Type:  Newsreader (body + headings) · Inter (UI) · IBM Plex Mono (code)
+   Paper: FT salmon #FFF1E5 (light) · warm slate #262A33 (dark)
+
+   Fonts are bundled below as base64 data URIs (latin subset) so the theme
+   works fully offline. Newsreader and Inter are variable fonts (400–700);
+   IBM Plex Mono ships as static 400 / 500 / 400-italic.
+   ============================================================================ */
+
+/* @FT-FONTS@ */
+
+body {
+  /* Obsidian reads --font-*-theme and feeds it into --font-*. Set both so the
+     theme wins unless the user overrides a font in Appearance settings. */
+  --font-text-theme:       'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-interface-theme:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-monospace-theme:  'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --font-text:             'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-interface:        'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-monospace:        'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+
+/* ---------------------------------------------------------------------------
+   TYPE SCALE + READING MEASURE  (shared across both modes)
+   --------------------------------------------------------------------------- */
+body {
+  --font-text-size:    19px;     /* body */
+  --line-height-normal: 1.72;    /* body leading */
+  --line-height-tight:  1.3;     /* headings */
+  --file-line-width:   42rem;    /* ~672px · measure ≈ 68ch */
+  --p-spacing:         1.25rem;  /* 20px between paragraphs */
+  --bold-weight:       600;      /* Newsreader semibold, never 700 */
+
+  --h1-size: 2.5rem;    --h1-weight: 600; --h1-line-height: 1.18;
+  --h2-size: 1.75rem;   --h2-weight: 600; --h2-line-height: 1.3;
+  --h3-size: 1.375rem;  --h3-weight: 600; --h3-line-height: 1.4;
+  --h4-size: 1.15rem;   --h4-weight: 600;
+  --h5-size: 1rem;      --h5-weight: 600;
+  --h6-size: 0.9rem;    --h6-weight: 600;
+
+  --code-size: 0.9375rem;        /* 15px inline code */
+  --code-border-width: 1px;
+  --blockquote-font-style: italic;
+
+  /* Hairline rules — thin, FT-style */
+  --hr-thickness: 1px;
+
+  /* Callout shape (colors are per-mode below) */
+  --callout-border-width: 1px;
+  --callout-radius: 8px;
+  --callout-padding: 14px 18px 15px;
+  --callout-title-weight: 600;
+
+  /* Tag pills — Inter, claret on a tinted pill */
+  --tag-size: 0.8125rem;         /* 13px */
+  --tag-weight: 500;
+  --tag-radius: 11px;
+  --tag-padding-x: 9px;
+  --tag-padding-y: 3px;
+  --tag-decoration: none;
+
+  /* Code blocks */
+  --code-radius: 8px;
+
+  /* Properties / frontmatter panel */
+  --metadata-label-width: 118px;
+
+  /* Modal / command palette */
+  --modal-radius: 12px;
+}
+
+/* ============================================================================
+   LIGHT  —  FT salmon paper
+   ============================================================================ */
+.theme-light {
+  /* Global accent (links, focus, toggles) = Oxford blue #0F5499 as HSL */
+  --accent-h: 210; --accent-s: 82%; --accent-l: 33%;
+
+  /* Theme-internal helpers */
+  --ft-claret:     #990F3D;
+  --ft-claret-rgb: 153, 15, 61;
+
+  /* Surfaces */
+  --background-primary:        #FFF1E5;  /* paper */
+  --background-primary-alt:     #FAE8D8;  /* active line / subtle alt */
+  --background-secondary:      #F2DFCE;  /* sidebars (Wheat) */
+  --background-secondary-alt:  #EBD7C3;  /* ribbon / deeper panel */
+  --background-modifier-border:         #CCC1B7;  /* hairline */
+  --background-modifier-border-hover:   #BCAFA2;
+  --background-modifier-border-focus:   #0F5499;
+  --background-modifier-hover:          rgba(153, 15, 61, 0.06);
+  --background-modifier-active-hover:   rgba(153, 15, 61, 0.10);
+
+  /* Text */
+  --text-normal:    #33302E;  /* warm near-black */
+  --text-muted:     #66605C;
+  --text-faint:     #8C8175;
+  --text-accent:        #0F5499;  /* Oxford blue */
+  --text-accent-hover:  #0A3D70;
+  --text-on-accent:     #FFF1E5;
+  --text-selection: rgba(15, 84, 153, 0.16);
+  --text-highlight-bg: rgba(244, 191, 79, 0.42);  /* highlighter */
+
+  /* Headings — Claret */
+  --h1-color: #990F3D;
+  --h2-color: #990F3D;
+  --h3-color: var(--text-normal);
+  --h4-color: var(--text-normal);
+  --h5-color: var(--text-muted);
+  --h6-color: var(--text-muted);
+  --inline-title-color: #990F3D;
+
+  /* Lists — em-dash markers in claret */
+  --list-marker-color: #990F3D;
+
+  /* Links / internal links */
+  --link-color:           #0F5499;
+  --link-color-hover:     #0A3D70;
+  --link-decoration:      none;
+  --link-decoration-hover: underline;
+  --link-unresolved-color: #B08A93;       /* dimmed claret for broken [[links]] */
+
+  /* Code — inline chip vs. block panel */
+  --code-background:   #F4E9DB;  /* inline */
+  --code-normal:       #33302E;
+  --code-border-color: rgba(204, 193, 183, 0.7);
+  --ft-codeblock-bg:            #F7EEE2;
+  --ft-codeblock-header-bg:     rgba(204, 193, 183, 0.16);
+  --ft-codeblock-header-border: rgba(204, 193, 183, 0.7);
+  --ft-codeblock-label:         #9A8E80;
+
+  /* Syntax tokens — shared by Prism (reading) and CodeMirror (live preview).
+     Warm, low-contrast: claret marks, teal quotes, Oxford leads. */
+  --code-comment:     #9A8E80;   /* italic via rule below */
+  --code-string:      #0D7680;   /* teal */
+  --code-keyword:     #990F3D;   /* claret */
+  --code-tag:         #990F3D;
+  --code-important:   #990F3D;
+  --code-property:    #33302E;   /* ink — properties read as prose */
+  --code-value:       #0F5499;   /* Oxford */
+  --code-function:    #0F5499;
+  --code-operator:    #66605C;
+  --code-punctuation: #66605C;
+
+  /* Rules */
+  --hr-color: #CCC1B7;
+
+  /* Blockquote — claret rule, no fill */
+  --blockquote-border-color: #990F3D;
+  --blockquote-border-thickness: 3px;
+  --blockquote-color: #4A4641;
+  --blockquote-background-color: transparent;
+
+  /* Tags — claret on tinted pill */
+  --tag-color: #990F3D;
+  --tag-background: rgba(153, 15, 61, 0.09);
+  --tag-color-hover: #990F3D;
+  --tag-background-hover: rgba(153, 15, 61, 0.16);
+
+  /* Callout accent colors (RGB triplets — Obsidian wraps them in rgb()).
+     Claret = important, Teal = tip/note, Oxford = info. */
+  --callout-default:   15, 84, 153;
+  --callout-info:      15, 84, 153;
+  --callout-tip:       13, 118, 128;
+  --callout-note:      13, 118, 128;
+  --callout-summary:   13, 118, 128;
+  --callout-important: 153, 15, 61;
+  --callout-quote:     102, 96, 92;
+  --callout-warning:   192, 116, 24;
+  --callout-error:     153, 15, 61;
+  --callout-border-opacity: 0.20;
+  --ft-callout-bg-opacity:  0.06;
+
+  /* UI chrome */
+  --titlebar-background:          #F2DFCE;
+  --titlebar-background-focused:  #F2DFCE;
+  --titlebar-text-color:          #66605C;
+  --ribbon-background:            #EBD7C3;
+  --tab-background-active:        #FFF1E5;
+  --tab-text-color:               #8C8175;
+  --tab-text-color-focused-active: #33302E;
+  --status-bar-background:        #F2DFCE;
+  --status-bar-text-color:        #8C8175;
+  --status-bar-border-color:      #CCC1B7;
+
+  /* Modal / command palette */
+  --modal-background:    #FFF8EF;
+  --modal-border-color:  #CCC1B7;
+  --prompt-border-color: #CCC1B7;
+  --ft-prompt-footer-bg: rgba(204, 193, 183, 0.14);
+
+  /* File explorer nav items */
+  --nav-item-color:            #5C554F;
+  --nav-item-color-hover:      #33302E;
+  --nav-item-color-active:     #990F3D;
+  --nav-item-background-active: rgba(153, 15, 61, 0.10);
+  --nav-item-weight-active:    600;
+}
+
+/* ============================================================================
+   DARK  —  warm slate, paper-tinted ink
+   ============================================================================ */
+.theme-dark {
+  /* Accent = lightened Oxford blue #7FB0E0 */
+  --accent-h: 210; --accent-s: 61%; --accent-l: 69%;
+
+  --ft-claret:     #E0879D;
+  --ft-claret-rgb: 224, 135, 157;
+
+  --background-primary:        #262A33;  /* warm slate */
+  --background-primary-alt:     #2B303A;
+  --background-secondary:      #20242D;
+  --background-secondary-alt:  #1C2029;  /* ribbon / deeper panel */
+  --background-modifier-border:         #343945;
+  --background-modifier-border-hover:   #424856;
+  --background-modifier-border-focus:   #7FB0E0;
+  --background-modifier-hover:          rgba(231, 223, 212, 0.05);
+  --background-modifier-active-hover:   rgba(224, 135, 157, 0.12);
+
+  --text-normal:    #E7DFD4;  /* paper-tinted */
+  --text-muted:     #9E978D;
+  --text-faint:     #6E6860;
+  --text-accent:        #7FB0E0;
+  --text-accent-hover:  #A6C8EC;
+  --text-on-accent:     #1C2029;
+  --text-selection: rgba(127, 176, 224, 0.20);
+  --text-highlight-bg: rgba(244, 191, 79, 0.28);
+
+  /* Headings — lightened Claret */
+  --h1-color: #E0879D;
+  --h2-color: #E0879D;
+  --h3-color: var(--text-normal);
+  --h4-color: var(--text-normal);
+  --h5-color: var(--text-muted);
+  --h6-color: var(--text-muted);
+  --inline-title-color: #E0879D;
+
+  --list-marker-color: #E0879D;
+
+  --link-color:           #7FB0E0;
+  --link-color-hover:     #A6C8EC;
+  --link-decoration:      none;
+  --link-decoration-hover: underline;
+  --link-unresolved-color: #B5848F;
+
+  --code-background:   #1C2029;
+  --code-normal:       #E7DFD4;
+  --code-border-color: #343945;
+  --ft-codeblock-bg:            #1C2029;
+  --ft-codeblock-header-bg:     rgba(231, 223, 212, 0.05);
+  --ft-codeblock-header-border: #343945;
+  --ft-codeblock-label:         #857E74;
+
+  --code-comment:     #8F8880;
+  --code-string:      #54B3BB;
+  --code-keyword:     #E0879D;
+  --code-tag:         #E0879D;
+  --code-important:   #E0879D;
+  --code-property:    #E7DFD4;
+  --code-value:       #7FB0E0;
+  --code-function:    #7FB0E0;
+  --code-operator:    #9E978D;
+  --code-punctuation: #9E978D;
+
+  --hr-color: #343945;
+
+  --blockquote-border-color: #E0879D;
+  --blockquote-border-thickness: 3px;
+  --blockquote-color: #C9C1B6;
+  --blockquote-background-color: transparent;
+
+  --tag-color: #E0879D;
+  --tag-background: rgba(224, 135, 157, 0.16);
+  --tag-color-hover: #E0879D;
+  --tag-background-hover: rgba(224, 135, 157, 0.26);
+
+  --callout-default:   127, 176, 224;
+  --callout-info:      127, 176, 224;
+  --callout-tip:       84, 179, 187;
+  --callout-note:      84, 179, 187;
+  --callout-summary:   84, 179, 187;
+  --callout-important: 224, 135, 157;
+  --callout-quote:     158, 151, 141;
+  --callout-warning:   216, 158, 92;
+  --callout-error:     224, 135, 157;
+  --callout-border-opacity: 0.26;
+  --ft-callout-bg-opacity:  0.11;
+
+  --titlebar-background:          #20242D;
+  --titlebar-background-focused:  #20242D;
+  --titlebar-text-color:          #9E978D;
+  --ribbon-background:            #1C2029;
+  --tab-background-active:        #262A33;
+  --tab-text-color:               #857E74;
+  --tab-text-color-focused-active: #E7DFD4;
+  --status-bar-background:        #20242D;
+  --status-bar-text-color:        #857E74;
+  --status-bar-border-color:      #343945;
+
+  --modal-background:    #2D323D;
+  --modal-border-color:  #343945;
+  --prompt-border-color: #343945;
+  --ft-prompt-footer-bg: rgba(231, 223, 212, 0.03);
+
+  --nav-item-color:            #9E978D;
+  --nav-item-color-hover:      #E7DFD4;
+  --nav-item-color-active:     #E0879D;
+  --nav-item-background-active: rgba(224, 135, 157, 0.15);
+  --nav-item-weight-active:    600;
+}
+
+/* ============================================================================
+   HEADINGS — the FT rule above every section
+   Reading view + Live Preview (CM6) kept in lockstep.
+   ============================================================================ */
+.markdown-rendered h2,
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  border-top: 1px solid var(--hr-color);
+  padding-top: 26px;
+}
+.markdown-rendered h2 {
+  margin-top: 42px;
+  margin-bottom: 14px;
+}
+
+/* Tight display tracking on the largest sizes */
+.markdown-rendered h1,
+.inline-title,
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  letter-spacing: -0.012em;
+}
+
+/* ============================================================================
+   LISTS — em-dash markers, claret
+   ============================================================================ */
+/* Reading view */
+.markdown-rendered ul > li:not(.task-list-item)::marker {
+  content: "—\2002";
+  color: var(--list-marker-color);
+}
+/* Live preview: replace the bullet dot Obsidian paints via .list-bullet:after */
+.markdown-source-view.mod-cm6 .list-bullet:after {
+  content: "—";
+  background-color: transparent;
+  border: none;
+  width: auto;
+  height: auto;
+  transform: none;
+  color: var(--list-marker-color);
+}
+
+/* ============================================================================
+   BLOCKQUOTE — larger italic serif, thin claret rule
+   ============================================================================ */
+.markdown-rendered blockquote {
+  font-size: 1.3125rem;   /* 21px */
+  line-height: 1.52;
+  margin: 24px 0;
+  padding: 3px 0 4px 22px;
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote {
+  font-size: 1.3125rem;
+  line-height: 1.52;
+}
+
+/* ============================================================================
+   CODE BLOCKS — bordered panel, uppercase language label, warm Prism palette
+   ============================================================================ */
+/* Reading view: block panel sits a shade lighter than inline code chips */
+.markdown-rendered pre {
+  background-color: var(--ft-codeblock-bg);
+  padding: 14px 16px;
+}
+.markdown-rendered pre code {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.90625rem;  /* 14.5px */
+  line-height: 1.7;
+}
+
+/* Language label header. The shared rule styles the bar; content is switched
+   on per-language below (CSS can't read the language name generically). */
+.markdown-rendered pre[class*="language-"]::before {
+  content: none;
+  display: block;
+  margin: -14px -16px 12px;
+  padding: 9px 16px;
+  background: var(--ft-codeblock-header-bg);
+  border-bottom: 1px solid var(--ft-codeblock-header-border);
+  font-family: var(--font-interface);
+  font-size: 0.6875rem;   /* 11px */
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ft-codeblock-label);
+}
+.markdown-rendered pre.language-css::before        { content: "css"; }
+.markdown-rendered pre.language-scss::before       { content: "scss"; }
+.markdown-rendered pre.language-html::before       { content: "html"; }
+.markdown-rendered pre.language-xml::before        { content: "xml"; }
+.markdown-rendered pre.language-js::before         { content: "js"; }
+.markdown-rendered pre.language-javascript::before { content: "javascript"; }
+.markdown-rendered pre.language-jsx::before        { content: "jsx"; }
+.markdown-rendered pre.language-ts::before         { content: "ts"; }
+.markdown-rendered pre.language-typescript::before { content: "typescript"; }
+.markdown-rendered pre.language-tsx::before        { content: "tsx"; }
+.markdown-rendered pre.language-json::before       { content: "json"; }
+.markdown-rendered pre.language-yaml::before       { content: "yaml"; }
+.markdown-rendered pre.language-yml::before        { content: "yml"; }
+.markdown-rendered pre.language-toml::before       { content: "toml"; }
+.markdown-rendered pre.language-ini::before        { content: "ini"; }
+.markdown-rendered pre.language-python::before     { content: "python"; }
+.markdown-rendered pre.language-py::before         { content: "python"; }
+.markdown-rendered pre.language-bash::before       { content: "bash"; }
+.markdown-rendered pre.language-sh::before         { content: "sh"; }
+.markdown-rendered pre.language-shell::before      { content: "shell"; }
+.markdown-rendered pre.language-zsh::before        { content: "zsh"; }
+.markdown-rendered pre.language-sql::before        { content: "sql"; }
+.markdown-rendered pre.language-c::before          { content: "c"; }
+.markdown-rendered pre.language-cpp::before        { content: "c++"; }
+.markdown-rendered pre.language-java::before       { content: "java"; }
+.markdown-rendered pre.language-go::before         { content: "go"; }
+.markdown-rendered pre.language-rust::before       { content: "rust"; }
+.markdown-rendered pre.language-ruby::before       { content: "ruby"; }
+.markdown-rendered pre.language-rb::before         { content: "ruby"; }
+.markdown-rendered pre.language-php::before        { content: "php"; }
+.markdown-rendered pre.language-swift::before      { content: "swift"; }
+.markdown-rendered pre.language-kotlin::before     { content: "kotlin"; }
+.markdown-rendered pre.language-lua::before        { content: "lua"; }
+.markdown-rendered pre.language-r::before          { content: "r"; }
+.markdown-rendered pre.language-diff::before       { content: "diff"; }
+.markdown-rendered pre.language-dockerfile::before { content: "dockerfile"; }
+.markdown-rendered pre.language-makefile::before   { content: "makefile"; }
+.markdown-rendered pre.language-markdown::before   { content: "markdown"; }
+.markdown-rendered pre.language-md::before         { content: "markdown"; }
+.markdown-rendered pre.language-plaintext::before  { content: "text"; }
+.markdown-rendered pre.language-text::before       { content: "text"; }
+.markdown-rendered pre.language-txt::before        { content: "text"; }
+
+/* Live preview: same panel, drawn across CM6 lines */
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+  background-color: var(--ft-codeblock-bg);
+  border-left: 1px solid var(--code-border-color);
+  border-right: 1px solid var(--code-border-color);
+  font-size: 0.90625rem;
+}
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin {
+  border-top: 1px solid var(--code-border-color);
+  border-top-left-radius: var(--code-radius);
+  border-top-right-radius: var(--code-radius);
+}
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-end {
+  border-bottom: 1px solid var(--code-border-color);
+  border-bottom-left-radius: var(--code-radius);
+  border-bottom-right-radius: var(--code-radius);
+}
+/* Live preview's floating language flair, styled like the reading-view label */
+.markdown-source-view.mod-cm6 .code-block-flair {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ft-codeblock-label);
+}
+
+/* Prism/CM token nudges the shared variables can't express */
+.markdown-rendered .token.comment,
+.cm-s-obsidian .cm-comment {
+  font-style: italic;
+}
+.markdown-rendered .token.selector { color: var(--code-keyword); }   /* claret, not string-teal */
+.markdown-rendered .token.attr-name { color: var(--code-property); }
+.markdown-rendered .language-css .token.string,
+.markdown-rendered .style .token.string { color: var(--code-string); }
+
+/* ============================================================================
+   CALLOUTS — tinted paper, hairline frame, 3px accent spine
+   Same .callout DOM in reading view and live preview.
+   ============================================================================ */
+.callout {
+  background-color: rgba(var(--callout-color), var(--ft-callout-bg-opacity));
+  border-left: 3px solid rgb(var(--callout-color));
+}
+.callout-title {
+  color: rgb(var(--callout-color));
+  font-family: var(--font-interface);
+  font-size: 0.875rem;    /* 14px */
+  line-height: 1.2;
+  gap: 8px;
+  align-items: center;
+}
+/* Dark mode lifts the title a step above the spine color for contrast */
+.theme-dark .callout-title {
+  color: color-mix(in srgb, rgb(var(--callout-color)) 80%, #FFFFFF 20%);
+}
+.callout-title:not(:only-child) { margin-bottom: 7px; }
+.callout-icon .svg-icon { width: 16px; height: 16px; }
+.callout-content {
+  font-size: 0.9375em;    /* ~18px against 19px body */
+  line-height: 1.62;
+  color: var(--text-normal);
+}
+.callout-content > :first-child { margin-top: 0; }
+.callout-content > :last-child { margin-bottom: 0; }
+.callout .callout { margin: 12px 0 4px; }
+
+/* ============================================================================
+   TAGS — Inter pills in both views
+   ============================================================================ */
+.markdown-rendered .tag,
+.cm-s-obsidian .cm-hashtag {
+  font-family: var(--font-interface);
+}
+
+/* ============================================================================
+   PROPERTIES / FRONTMATTER
+   ============================================================================ */
+.metadata-container {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.metadata-property[data-property-key="tags"] .multi-select-pill {
+  background: var(--tag-background);
+  color: var(--tag-color);
+  border: none;
+  border-radius: var(--tag-radius);
+}
+.metadata-property[data-property-key="tags"] .multi-select-pill:hover {
+  background: var(--tag-background-hover);
+  color: var(--tag-color-hover);
+}
+
+/* Tighter, letter-spaced UI labels (sidebar headers, properties keys) */
+.nav-header,
+.metadata-property-key {
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================================
+   FILE EXPLORER — active file gets the claret tint + 2px left bar
+   ============================================================================ */
+.nav-file-title.is-active,
+.tree-item-self.is-active {
+  box-shadow: inset 2px 0 0 var(--ft-claret);
+}
+
+/* ============================================================================
+   COMMAND PALETTE / QUICK SWITCHER
+   ============================================================================ */
+.prompt { border-radius: var(--modal-radius); }
+.prompt .suggestion-item.is-selected {
+  background-color: rgba(var(--ft-claret-rgb), 0.10);
+  color: var(--ft-claret);
+}
+.suggestion-hotkey {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.prompt .suggestion-item.is-selected .suggestion-hotkey {
+  color: var(--ft-claret);
+  background: rgba(var(--ft-claret-rgb), 0.10);
+  border-color: rgba(var(--ft-claret-rgb), 0.22);
+}
+.prompt-instructions {
+  background: var(--ft-prompt-footer-bg);
+  border-top: 1px solid var(--background-modifier-border);
+  color: var(--text-faint);
+}
+.prompt-instruction-command {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-weight: 400;
+}
+
+/* ============================================================================
+   OPTIONAL — FT-style drop cap on the first paragraph of a note.
+   Off by default; uncomment to enable (reading view only).
+.markdown-reading-view .markdown-preview-section > div > p:first-of-type::first-letter {
+  float: left;
+  font-weight: 600;
+  font-size: 3.2em;
+  line-height: 0.82;
+  padding: 0.11em 0.18em 0 0;
+  color: var(--h1-color);
+}
+   ============================================================================ */

@@ -1,0 +1,13 @@
+# Design reference mockups — not part of the shipped theme
+FT Obsidian Theme.dc.html
+support.js
+
+# macOS
+.DS_Store
+
+# Local Claude Code settings
+.claude/
+
+# Local build tooling and internal design spec
+build.py
+HANDOFF.md
