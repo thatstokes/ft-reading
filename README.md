@@ -42,6 +42,19 @@ used sparingly (claret to mark, Oxford blue to lead, teal to note).
 A drop cap on the first paragraph of each note ships disabled. To enable it,
 uncomment the block at the bottom of the theme CSS (search for "drop cap").
 
+### Using the Terminal plugin?
+
+On a light background, some tools (e.g. CLIs that dim secondary text) print
+grays that were tuned for dark terminals, so they can become hard to read.
+The [Terminal](https://github.com/polyipseity/obsidian-terminal) plugin reads
+only the background and foreground from the theme; the rest of the ANSI
+palette comes from its own defaults and can't be recolored from theme CSS
+(especially with the WebGL renderer). If faint text bothers you, set the
+plugin's `minimumContrastRatio` terminal option to around **7** — xterm will
+lift any too-faint color to meet that contrast against the background, without
+a renderer change. Values near 21 will darken colored text toward black, so
+keep it moderate.
+
 ## Development
 
 `theme.css` is generated — the readable source is `theme-source.css`, which
